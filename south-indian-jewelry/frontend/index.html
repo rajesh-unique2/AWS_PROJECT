@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>South Indian Wedding Jewelry Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <h1>South Indian Wedding Jewelry Online</h1>
+      <div class="nav-actions">
+        <span id="userLabel">Guest</span>
+        <a id="trackPageLink" class="btn nav-track-link hidden" href="./tracking.html"><i class="fa-solid fa-truck-fast"></i> Track Delivery</a>
+        <button id="logoutBtn" class="btn secondary hidden"><i class="fa-solid fa-right-from-bracket"></i> Exit</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="authView" class="hero animate-reveal">
+      <div class="container hero-wrap auth-wrap">
+        <div class="intro-card animate-reveal">
+          <h2>Traditional South Indian Bridal Collection</h2>
+          <p>Sign up to explore jewelry, save favorites, place orders, and track delivery.</p>
+        </div>
+
+        <div class="card auth-card animate-reveal" id="signupCard">
+          <h3>Create Account</h3>
+          <form id="registerForm">
+            <input type="text" id="regName" placeholder="Name" required />
+            <input type="email" id="regEmail" placeholder="Email" required />
+            <input type="password" id="regPassword" placeholder="Password" required />
+            <button class="btn" type="submit">Sign Up</button>
+          </form>
+          <p class="switch-text">Already have an account? <a href="/login" id="goToLogin">Login here</a></p>
+        </div>
+
+        <div class="card auth-card hidden animate-reveal" id="loginCard">
+          <h3>Login</h3>
+        <form id="loginForm">
+          <input type="email" id="loginEmail" placeholder="Email" required />
+          <input type="password" id="loginPassword" placeholder="Password" required />
+          <button class="btn" type="submit">Login</button>
+        </form>
+          <p class="switch-text">New user? <a href="/signup" id="goToSignup">Create account</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="shopView" class="hidden">
+      <section class="container animate-reveal">
+        <div class="section-head">
+          <h3>Products</h3>
+          <div class="filters">
+            <input type="text" id="searchInput" placeholder="Search products" />
+            <select id="categoryFilter" aria-label="Filter by category">
+              <option value="">All Categories</option>
+            </select>
+            <button id="searchBtn" class="btn secondary">Apply</button>
+          </div>
+        </div>
+        <div id="productsGrid" class="products-grid"></div>
+      </section>
+
+      <section class="container animate-reveal">
+        <h3>Liked Items</h3>
+        <div id="wishlistItems" class="orders-box wishlist-grid"></div>
+      </section>
+
+      <section class="container cart-section animate-reveal">
+        <div class="section-head">
+          <h3>My Cart</h3>
+          <button id="refreshCartBtn" class="btn secondary">Refresh Cart</button>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="checkout-payment" aria-label="Payment options">
+          <h4>Select Payment Method</h4>
+          <div class="payment-method-tabs" aria-label="Payment methods">
+            <button class="payment-method-btn active" type="button" data-payment="UPI_ID"><i class="fa-brands fa-google-pay"></i> UPI ID</button>
+            <button class="payment-method-btn" type="button" data-payment="CARD"><i class="fa-regular fa-credit-card"></i> Card</button>
+            <button class="payment-method-btn" type="button" data-payment="NET_BANKING"><i class="fa-solid fa-building-columns"></i> Net Banking</button>
+            <button class="payment-method-btn" type="button" data-payment="UPI_APP"><i class="fa-solid fa-mobile-screen-button"></i> UPI Apps</button>
+            <button class="payment-method-btn" type="button" data-payment="SCAN_PAY"><i class="fa-solid fa-qrcode"></i> Scan & Pay</button>
+          </div>
+          <div class="payment-grid">
+            <label class="payment-option" id="upiIdWrap" for="upiIdInput">
+              <span>UPI ID</span>
+              <input id="upiIdInput" type="text" placeholder="example@upi" />
+            </label>
+            <label class="payment-option hidden" id="upiAppWrap" for="upiAppSelect">
+              <span>UPI App</span>
+              <select id="upiAppSelect" aria-label="Choose UPI app">
+                <option value="Google Pay">Google Pay</option>
+                <option value="PhonePe">PhonePe</option>
+                <option value="Paytm">Paytm</option>
+                <option value="BHIM">BHIM</option>
+                <option value="Amazon Pay">Amazon Pay</option>
+              </select>
+            </label>
+            <label class="payment-option hidden" id="cardNumberWrap" for="cardNumberInput">
+              <span>Card Number</span>
+              <input id="cardNumberInput" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" />
+            </label>
+            <label class="payment-option hidden" id="netBankWrap" for="netBankSelect">
+              <span>Select Bank</span>
+              <select id="netBankSelect" aria-label="Choose bank for net banking">
+                <option value="">Choose your bank</option>
+                <option value="Airtel Payments Bank">Airtel Payments Bank</option>
+                <option value="Axis Bank">Axis Bank</option>
+                <option value="HDFC Bank">HDFC Bank</option>
+                <option value="ICICI Bank">ICICI Bank</option>
+                <option value="Kotak Bank">Kotak Bank</option>
+                <option value="State Bank of India">State Bank of India</option>
+                <option value="Allahabad Bank">Allahabad Bank</option>
+                <option value="Andhra Bank">Andhra Bank</option>
+                <option value="Bank of India">Bank of India</option>
+                <option value="Bank of Maharashtra">Bank of Maharashtra</option>
+                <option value="Canara Bank">Canara Bank</option>
+                <option value="Catholic Syrian Bank">Catholic Syrian Bank</option>
+                <option value="Central Bank of India">Central Bank of India</option>
+              </select>
+            </label>
+            <div class="payment-option hidden" id="scanPayWrap">
+              <span>Scan & Pay Reference</span>
+              <input id="scanRefInput" type="text" placeholder="Enter transaction reference" />
+              <div class="scan-pay-camera-controls">
+                <button id="scanCameraBtn" type="button" class="btn secondary"><i class="fa-solid fa-camera"></i> Open Camera</button>
+                <button id="scanCameraStopBtn" type="button" class="btn secondary hidden"><i class="fa-solid fa-stop"></i> Stop Camera</button>
+              </div>
+              <video id="scanVideo" class="scan-video hidden" muted></video>
+              <small id="scanCameraStatus" class="scan-status">Use camera to scan UPI QR and auto-fill reference.</small>
+            </div>
+          </div>
+        </div>
+        <div class="cart-footer">
+          <strong>Total: ₹<span id="cartTotal">0</span></strong>
+          <button id="placeOrderBtn" class="btn"><i class="fa-solid fa-box-open"></i> Place Order</button>
+        </div>
+      </section>
+
+      <section class="container animate-reveal">
+        <h3>My Orders</h3>
+        <div id="ordersBox" class="orders-box orders-dark"></div>
+      </section>
+    </section>
+
+    <section class="container contact-manager animate-reveal">
+      <div class="card">
+        <h3><i class="fa-solid fa-headset"></i> Contact Jewellery Manager</h3>
+        <p>Need help with product details, custom orders, or payment support? Contact the manager directly.</p>
+        <div class="contact-actions">
+          <a class="btn contact-icon-btn" href="tel:+919876543210" aria-label="Call jewellery manager" title="Call"><i class="fa-solid fa-phone-volume"></i></a>
+          <a class="btn secondary contact-icon-btn" href="mailto:manager@southindianjewelry.com" aria-label="Email jewellery manager" title="Email"><i class="fa-solid fa-envelope-open-text"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <div id="productModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="productTitle">
+      <div class="modal-card">
+        <button id="closeModalBtn" class="close-btn" type="button" aria-label="Exit"><i class="fa-solid fa-right-from-bracket"></i></button>
+        <img id="productImage" src="" alt="Product" />
+        <h3 id="productTitle"></h3>
+        <p id="productDesc"></p>
+        <p id="productMeta"></p>
+        <div class="price">
+          <span id="productPrice" class="current"></span>
+          <span id="productOldPrice" class="old"></span>
+        </div>
+        <div class="modal-actions">
+          <button id="detailAddCartBtn" class="btn" type="button"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+          <button id="detailLikeBtn" class="btn secondary icon-btn" type="button" aria-label="Like"><i class="fa-regular fa-heart"></i></button>
+          <button id="detailBuyBtn" class="btn secondary" type="button"><i class="fa-solid fa-bag-shopping"></i> Buy Now</button>
+          <button id="detailShareBtn" class="btn secondary icon-btn" type="button" aria-label="Share"><i class="fa-solid fa-share-nodes"></i></button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="./js/app.js?v=20260226"></script>
+</body>
+</html>

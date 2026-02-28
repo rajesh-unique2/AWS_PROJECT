@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Delivery - South Indian Wedding Jewelry Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <h1><i class="fa-solid fa-truck-fast"></i> Delivery Tracking</h1>
+      <div class="nav-actions">
+        <a class="btn nav-track-link" href="./index.html"><i class="fa-solid fa-house"></i> Back to Shop</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container tracking-hero">
+      <div class="section-head">
+        <h3>Track Your Orders</h3>
+        <select id="orderSelect" aria-label="Select order to track">
+          <option value="">Choose an order</option>
+        </select>
+      </div>
+
+      <div class="tracking-grid">
+        <div class="tracking-panel" id="trackingDetails">
+          <p>Select an order to view interactive tracking details.</p>
+        </div>
+
+        <div class="tracking-panel">
+          <h4><i class="fa-solid fa-store"></i> Courier Partners</h4>
+          <div class="carrier-cards">
+            <div class="carrier-card">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" />
+              <div>
+                <strong>Amazon-style Tracking</strong>
+                <p>Live events, ETA updates, and status chips.</p>
+              </div>
+            </div>
+            <div class="carrier-card">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Flipkart_logo.png" alt="Flipkart" />
+              <div>
+                <strong>Flipkart-style Tracking</strong>
+                <p>Clear milestone timeline and delivery status colors.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="./js/tracking.js?v=20260226"></script>
+</body>
+</html>
