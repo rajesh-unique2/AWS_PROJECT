@@ -659,12 +659,31 @@ async function refreshSessionState() {
   try {
     const response = await api("/me");
     currentUser = response.user;
-  } catch {
+  } catch (error) {
     currentUser = null;
-    authToken = "";
-    localStorage.removeItem("authToken");
+    const message = (error?.message || "").toLowerCase();
+    const isAuthError = message.includes("not authenticated") || message.includes("401");
+    if (isAuthError) {
+      authToken = "";
+      localStorage.removeItem("authToken");
+    }
   }
   refreshLayout();
+}
+
+function applyAuthStateFromResponse(response) {
+  if (response.token) {
+    authToken = response.token;
+    localStorage.setItem("authToken", authToken);
+  }
+
+  if (response.user && response.user.id) {
+    currentUser = {
+      ...response.user,
+      name: response.user.name || response.user.email || "User",
+    };
+    refreshLayout();
+  }
 }
 
 document.getElementById("registerForm").addEventListener("submit", async (event) => {
@@ -679,10 +698,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
         password: document.getElementById("regPassword").value,
       }),
     });
-    if (response.token) {
-      authToken = response.token;
-      localStorage.setItem("authToken", authToken);
-    }
+    applyAuthStateFromResponse(response);
     form.reset();
     showToast("Registration successful");
     await refreshSessionState();
@@ -706,10 +722,7 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
         password: document.getElementById("loginPassword").value,
       }),
     });
-    if (response.token) {
-      authToken = response.token;
-      localStorage.setItem("authToken", authToken);
-    }
+    applyAuthStateFromResponse(response);
     form.reset();
     showToast("Login successful");
     await refreshSessionState();
