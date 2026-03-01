@@ -52,6 +52,18 @@ Use VS Code Live Server extension or any static server and open `frontend/index.
 Recommended URL:
 - `http://127.0.0.1:5500/frontend/index.html`
 
+## Deploy on Render
+
+If your Render service root is this repository root (`south-indian-jewelry`), use:
+
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `cd backend; gunicorn app:app --bind 0.0.0.0:$PORT`
+
+Alternative (recommended): set **Root Directory** to `backend`, then use:
+
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT`
+
 ## Available API Endpoints
 
 - `POST /api/register`
