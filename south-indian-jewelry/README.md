@@ -64,6 +64,14 @@ Alternative (recommended): set **Root Directory** to `backend`, then use:
 - Build Command: `pip install -r requirements.txt`
 - Start Command: `gunicorn app:app --bind 0.0.0.0:$PORT`
 
+If frontend is deployed on a different domain (e.g. Render Static Site), set backend env var:
+
+- `FRONTEND_ORIGIN=https://aws-project-3.onrender.com`
+
+For multiple frontend domains, use:
+
+- `FRONTEND_ORIGINS=https://site1.onrender.com,https://site2.onrender.com`
+
 ## Available API Endpoints
 
 - `POST /api/register`

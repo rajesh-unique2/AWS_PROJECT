@@ -23,24 +23,35 @@ app.config.update(
 
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
+
+default_cors_origins = [
+    r"http://localhost:\d+",
+    r"https://localhost:\d+",
+    r"http://127\.0\.0\.1:\d+",
+    r"https://127\.0\.0\.1:\d+",
+    r"http://192\.168\.\d+\.\d+:\d+",
+    r"https://192\.168\.\d+\.\d+:\d+",
+    r"http://10\.\d+\.\d+\.\d+:\d+",
+    r"https://10\.\d+\.\d+\.\d+:\d+",
+    r"http://172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+",
+    r"https://172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+",
+    r"http://[a-zA-Z0-9\-\.]+:\d+",
+    r"https://[a-zA-Z0-9\-\.]+:\d+",
+    "null",
+]
+
+frontend_origin_env = os.getenv("FRONTEND_ORIGIN", "").strip()
+frontend_origins_env = os.getenv("FRONTEND_ORIGINS", "").strip()
+configured_origins = [
+    origin.strip()
+    for origin in [frontend_origin_env, *frontend_origins_env.split(",")]
+    if origin.strip()
+]
+
 CORS(
     app,
     supports_credentials=True,
-    origins=[
-        r"http://localhost:\d+",
-        r"https://localhost:\d+",
-        r"http://127\.0\.0\.1:\d+",
-        r"https://127\.0\.0\.1:\d+",
-        r"http://192\.168\.\d+\.\d+:\d+",
-        r"https://192\.168\.\d+\.\d+:\d+",
-        r"http://10\.\d+\.\d+\.\d+:\d+",
-        r"https://10\.\d+\.\d+\.\d+:\d+",
-        r"http://172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+",
-        r"https://172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+:\d+",
-        r"http://[a-zA-Z0-9\-\.]+:\d+",
-        r"https://[a-zA-Z0-9\-\.]+:\d+",
-        "null",
-    ],
+    origins=[*default_cors_origins, *configured_origins],
 )
 
 FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
