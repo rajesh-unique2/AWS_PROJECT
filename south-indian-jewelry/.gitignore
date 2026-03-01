@@ -10,6 +10,7 @@ backend/.venv/
 venv/
 
 # Environment variables
+backend/.env
 backend/.env.local
 
 # VS Code

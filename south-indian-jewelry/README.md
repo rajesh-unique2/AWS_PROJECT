@@ -21,6 +21,12 @@ pip install -r requirements.txt
 
 Update `backend/.env` if your MongoDB URI is different.
 
+Use your MongoDB Atlas cluster connection string in `backend/.env`:
+
+```bash
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-host>/south_indian_jewelry?retryWrites=true&w=majority&appName=Cluster0
+```
+
 For order email notification to Gmail, add these keys in `backend/.env`:
 
 ```bash
@@ -75,5 +81,5 @@ Recommended URL:
 
 - Sample products are auto-seeded on first backend run.
 - Default session-based auth is used.
-- Make sure MongoDB is running locally before starting the backend.
+- Make sure your MongoDB Atlas cluster network access and database user credentials are configured.
 - Gmail sending requires an App Password (regular account password will fail).
