@@ -11,6 +11,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
 import json
+import certifi
+from types import SimpleNamespace
 from config import Config
 
 app = Flask(__name__)
@@ -21,7 +23,32 @@ app.config.update(
     SESSION_COOKIE_SECURE=False,
 )
 
-mongo = PyMongo(app)
+def create_mongo_client():
+    primary_client = PyMongo(app, tlsCAFile=certifi.where(), serverSelectionTimeoutMS=5000)
+    fallback_enabled = os.getenv("ALLOW_MOCK_DB_FALLBACK", "1") == "1"
+
+    try:
+        primary_client.cx.admin.command("ping")
+        app.config["DB_MODE"] = "mongodb"
+        return primary_client
+    except Exception as db_error:
+        if not fallback_enabled:
+            raise
+
+        import mongomock
+
+        mock_db_name = os.getenv("MOCK_DB_NAME", "south_indian_jewelry")
+        mock_client = mongomock.MongoClient()
+        app.config["DB_MODE"] = "mock"
+        app.logger.warning(
+            "MongoDB unavailable (%s). Using in-memory mock database '%s'.",
+            db_error,
+            mock_db_name,
+        )
+        return SimpleNamespace(db=mock_client[mock_db_name], cx=mock_client)
+
+
+mongo = create_mongo_client()
 bcrypt = Bcrypt(app)
 
 default_cors_origins = [
@@ -75,6 +102,16 @@ def serve_signup_page():
 @app.route("/tracking", methods=["GET"])
 def serve_tracking_page():
     return send_from_directory(FRONTEND_DIR, "tracking.html")
+
+
+@app.route("/account", methods=["GET"])
+def serve_account_page():
+    return send_from_directory(FRONTEND_DIR, "account.html")
+
+
+@app.route("/account.html", methods=["GET"])
+def serve_account_page_html():
+    return send_from_directory(FRONTEND_DIR, "account.html")
 
 
 @app.route("/tracking.html", methods=["GET"])

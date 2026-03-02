@@ -1,13 +1,17 @@
 const isFlaskOrigin = window.location.port === "5000";
 const apiHost = window.location.hostname || "127.0.0.1";
 const pageProtocol = window.location.protocol === "https:" ? "https" : "http";
-const configuredApiBase = (localStorage.getItem("apiBaseUrl") || "").trim();
-const deployedApiBase = "https://aws-project-2.onrender.com/api";
+const configuredApiBaseRaw = (localStorage.getItem("apiBaseUrl") || "").trim();
+const defaultBackendApiBase = "http://127.0.0.1:5000/api";
+const configuredApiBase = configuredApiBaseRaw
+  ? configuredApiBaseRaw.replace(/\/+$/, "").endsWith("/api")
+    ? configuredApiBaseRaw.replace(/\/+$/, "")
+    : `${configuredApiBaseRaw.replace(/\/+$/, "")}/api`
+  : "";
 const API_BASE_CANDIDATES = isFlaskOrigin
   ? ["/api"]
   : [
-  ...(configuredApiBase ? [configuredApiBase] : []),
-  deployedApiBase,
+  configuredApiBase || defaultBackendApiBase,
   "/api",
       `${pageProtocol}://${apiHost}:5000/api`,
       `http://${apiHost}:5000/api`,

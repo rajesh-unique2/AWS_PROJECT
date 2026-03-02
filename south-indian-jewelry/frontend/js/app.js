@@ -1,13 +1,17 @@
 const isFlaskOrigin = window.location.port === "5000";
 const apiHost = window.location.hostname || "127.0.0.1";
 const pageProtocol = window.location.protocol === "https:" ? "https" : "http";
-const configuredApiBase = (localStorage.getItem("apiBaseUrl") || "").trim();
-const deployedApiBase = "https://aws-project-2.onrender.com/api";
+const configuredApiBaseRaw = (localStorage.getItem("apiBaseUrl") || "").trim();
+const defaultBackendApiBase = "http://127.0.0.1:5000/api";
+const configuredApiBase = configuredApiBaseRaw
+  ? configuredApiBaseRaw.replace(/\/+$/, "").endsWith("/api")
+    ? configuredApiBaseRaw.replace(/\/+$/, "")
+    : `${configuredApiBaseRaw.replace(/\/+$/, "")}/api`
+  : "";
 const API_BASE_CANDIDATES = isFlaskOrigin
   ? ["/api"]
   : [
-  ...(configuredApiBase ? [configuredApiBase] : []),
-  deployedApiBase,
+  configuredApiBase || defaultBackendApiBase,
   "/api",
       `${pageProtocol}://${apiHost}:5000/api`,
       `http://${apiHost}:5000/api`,
@@ -28,12 +32,25 @@ const cartTotal = document.getElementById("cartTotal");
 const ordersBox = document.getElementById("ordersBox");
 const wishlistItems = document.getElementById("wishlistItems");
 const userLabel = document.getElementById("userLabel");
+const likedPageLink = document.getElementById("likedPageLink");
+const cartPageLink = document.getElementById("cartPageLink");
+const ordersPageLink = document.getElementById("ordersPageLink");
 const logoutBtn = document.getElementById("logoutBtn");
 const trackPageLink = document.getElementById("trackPageLink");
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const mobileSidebar = document.getElementById("mobileSidebar");
+const mobileSidebarOverlay = document.getElementById("mobileSidebarOverlay");
+const mobileSidebarClose = document.getElementById("mobileSidebarClose");
+const mobileNavLiked = document.getElementById("mobileNavLiked");
+const mobileNavCart = document.getElementById("mobileNavCart");
+const mobileNavOrders = document.getElementById("mobileNavOrders");
+const mobileNavTrack = document.getElementById("mobileNavTrack");
+const mobileNavExit = document.getElementById("mobileNavExit");
 const authView = document.getElementById("authView");
 const shopView = document.getElementById("shopView");
 const signupCard = document.getElementById("signupCard");
 const loginCard = document.getElementById("loginCard");
+const contactSection = document.getElementById("contactSection");
 
 const productModal = document.getElementById("productModal");
 const productImage = document.getElementById("productImage");
@@ -270,20 +287,49 @@ function showAuthMode(mode) {
   loginCard.classList.add("hidden");
 }
 
+function formatDisplayName(name) {
+  return (name || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function closeMobileSidebar() {
+  if (mobileSidebar) mobileSidebar.classList.add("hidden");
+  if (mobileSidebarOverlay) mobileSidebarOverlay.classList.add("hidden");
+}
+
+function openMobileSidebar() {
+  if (mobileSidebar) mobileSidebar.classList.remove("hidden");
+  if (mobileSidebarOverlay) mobileSidebarOverlay.classList.remove("hidden");
+}
+
 function refreshLayout() {
   if (isLoggedIn()) {
     authView.classList.add("hidden");
     shopView.classList.remove("hidden");
     logoutBtn.classList.remove("hidden");
+    likedPageLink?.classList.remove("hidden");
+    cartPageLink?.classList.remove("hidden");
+    ordersPageLink?.classList.remove("hidden");
     trackPageLink.classList.remove("hidden");
-    userLabel.textContent = currentUser.name || currentUser.email || "User";
+    if (mobileMenuBtn) mobileMenuBtn.classList.remove("hidden");
+    if (contactSection) contactSection.classList.remove("hidden");
+    const preferredName = currentUser.name || currentUser.email || "User";
+    userLabel.textContent = formatDisplayName(preferredName);
     return;
   }
 
   authView.classList.remove("hidden");
   shopView.classList.add("hidden");
   logoutBtn.classList.add("hidden");
+  likedPageLink?.classList.add("hidden");
+  cartPageLink?.classList.add("hidden");
+  ordersPageLink?.classList.add("hidden");
   trackPageLink.classList.add("hidden");
+  if (mobileMenuBtn) mobileMenuBtn.classList.add("hidden");
+  if (contactSection) contactSection.classList.add("hidden");
+  closeMobileSidebar();
   userLabel.textContent = "Guest";
 }
 
@@ -510,6 +556,7 @@ function closeProductModal() {
 }
 
 async function loadCart() {
+  if (!cartItems || !cartTotal) return;
   if (!isLoggedIn()) return;
   try {
     const data = await api("/cart");
@@ -559,6 +606,7 @@ async function loadCart() {
 }
 
 async function loadOrders() {
+  if (!ordersBox) return;
   if (!isLoggedIn()) return;
   try {
     const data = await api("/orders");
@@ -609,6 +657,7 @@ async function loadOrders() {
 }
 
 async function loadWishlist() {
+  if (!wishlistItems) return;
   if (!isLoggedIn()) return;
   try {
     const data = await api("/wishlist");
@@ -736,8 +785,12 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
 });
 
 document.getElementById("searchBtn").addEventListener("click", loadProducts);
-document.getElementById("refreshCartBtn").addEventListener("click", loadCart);
+const refreshCartBtn = document.getElementById("refreshCartBtn");
+if (refreshCartBtn) {
+  refreshCartBtn.addEventListener("click", loadCart);
+}
 
+if (placeOrderBtn) {
 placeOrderBtn.addEventListener("click", async () => {
   setButtonLoading(placeOrderBtn, true, "Placing...");
   try {
@@ -772,6 +825,7 @@ placeOrderBtn.addEventListener("click", async () => {
     setButtonLoading(placeOrderBtn, false);
   }
 });
+}
 
 logoutBtn.addEventListener("click", async () => {
   try {
@@ -780,6 +834,7 @@ logoutBtn.addEventListener("click", async () => {
     localStorage.removeItem("authToken");
     currentUser = null;
     showToast("Logged out");
+    closeMobileSidebar();
     refreshLayout();
     showAuthMode("login");
   } catch (error) {
@@ -948,6 +1003,54 @@ async function init() {
       const digitsOnly = cardNumberInput.value.replace(/\D/g, "").slice(0, 19);
       const grouped = digitsOnly.replace(/(.{4})/g, "$1 ").trim();
       cardNumberInput.value = grouped;
+    });
+  }
+
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener("click", () => {
+      openMobileSidebar();
+    });
+  }
+
+  if (mobileSidebarOverlay) {
+    mobileSidebarOverlay.addEventListener("click", () => {
+      closeMobileSidebar();
+    });
+  }
+
+  if (mobileSidebarClose) {
+    mobileSidebarClose.addEventListener("click", () => {
+      closeMobileSidebar();
+    });
+  }
+
+  if (mobileNavLiked) {
+    mobileNavLiked.addEventListener("click", () => {
+      closeMobileSidebar();
+    });
+  }
+
+  if (mobileNavCart) {
+    mobileNavCart.addEventListener("click", () => {
+      closeMobileSidebar();
+    });
+  }
+
+  if (mobileNavOrders) {
+    mobileNavOrders.addEventListener("click", () => {
+      closeMobileSidebar();
+    });
+  }
+
+  if (mobileNavTrack) {
+    mobileNavTrack.addEventListener("click", () => {
+      closeMobileSidebar();
+    });
+  }
+
+  if (mobileNavExit) {
+    mobileNavExit.addEventListener("click", () => {
+      logoutBtn.click();
     });
   }
 

@@ -16,11 +16,30 @@
       <h1>South Indian Wedding Jewelry Online</h1>
       <div class="nav-actions">
         <span id="userLabel">Guest</span>
+        <a id="likedPageLink" class="btn nav-track-link hidden" href="./account.html"><i class="fa-regular fa-heart"></i> Liked Items</a>
+        <a id="cartPageLink" class="btn nav-track-link hidden" href="./account.html"><i class="fa-solid fa-cart-shopping"></i> My Card</a>
+        <a id="ordersPageLink" class="btn nav-track-link hidden" href="./account.html"><i class="fa-solid fa-box"></i> My Orders</a>
         <a id="trackPageLink" class="btn nav-track-link hidden" href="./tracking.html"><i class="fa-solid fa-truck-fast"></i> Track Delivery</a>
         <button id="logoutBtn" class="btn secondary hidden"><i class="fa-solid fa-right-from-bracket"></i> Exit</button>
+        <button id="mobileMenuBtn" class="btn secondary icon-btn mobile-menu-btn hidden" type="button" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
   </header>
+
+  <div id="mobileSidebarOverlay" class="mobile-sidebar-overlay hidden"></div>
+  <aside id="mobileSidebar" class="mobile-sidebar hidden" aria-label="Mobile menu">
+    <div class="mobile-sidebar-head">
+      <strong>Menu</strong>
+      <button id="mobileSidebarClose" class="btn secondary icon-btn" type="button" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <nav class="mobile-sidebar-links">
+      <a id="mobileNavLiked" class="btn secondary" href="./account.html"><i class="fa-regular fa-heart"></i> Liked Items</a>
+      <a id="mobileNavCart" class="btn secondary" href="./account.html"><i class="fa-solid fa-cart-shopping"></i> My Card</a>
+      <a id="mobileNavOrders" class="btn secondary" href="./account.html"><i class="fa-solid fa-box"></i> My Orders</a>
+      <a id="mobileNavTrack" class="btn secondary" href="./tracking.html"><i class="fa-solid fa-truck-fast"></i> Track Delivery</a>
+      <button id="mobileNavExit" class="btn danger" type="button"><i class="fa-solid fa-right-from-bracket"></i> Exit</button>
+    </nav>
+  </aside>
 
   <main>
     <section id="authView" class="hero animate-reveal">
@@ -68,95 +87,17 @@
         <div id="productsGrid" class="products-grid"></div>
       </section>
 
-      <section class="container animate-reveal">
-        <h3>Liked Items</h3>
-        <div id="wishlistItems" class="orders-box wishlist-grid"></div>
-      </section>
-
-      <section class="container cart-section animate-reveal">
-        <div class="section-head">
-          <h3>My Cart</h3>
-          <button id="refreshCartBtn" class="btn secondary">Refresh Cart</button>
-        </div>
-        <div id="cartItems" class="cart-items"></div>
-        <div class="checkout-payment" aria-label="Payment options">
-          <h4>Select Payment Method</h4>
-          <div class="payment-method-tabs" aria-label="Payment methods">
-            <button class="payment-method-btn active" type="button" data-payment="UPI_ID"><i class="fa-brands fa-google-pay"></i> UPI ID</button>
-            <button class="payment-method-btn" type="button" data-payment="CARD"><i class="fa-regular fa-credit-card"></i> Card</button>
-            <button class="payment-method-btn" type="button" data-payment="NET_BANKING"><i class="fa-solid fa-building-columns"></i> Net Banking</button>
-            <button class="payment-method-btn" type="button" data-payment="UPI_APP"><i class="fa-solid fa-mobile-screen-button"></i> UPI Apps</button>
-            <button class="payment-method-btn" type="button" data-payment="SCAN_PAY"><i class="fa-solid fa-qrcode"></i> Scan & Pay</button>
-          </div>
-          <div class="payment-grid">
-            <label class="payment-option" id="upiIdWrap" for="upiIdInput">
-              <span>UPI ID</span>
-              <input id="upiIdInput" type="text" placeholder="example@upi" />
-            </label>
-            <label class="payment-option hidden" id="upiAppWrap" for="upiAppSelect">
-              <span>UPI App</span>
-              <select id="upiAppSelect" aria-label="Choose UPI app">
-                <option value="Google Pay">Google Pay</option>
-                <option value="PhonePe">PhonePe</option>
-                <option value="Paytm">Paytm</option>
-                <option value="BHIM">BHIM</option>
-                <option value="Amazon Pay">Amazon Pay</option>
-              </select>
-            </label>
-            <label class="payment-option hidden" id="cardNumberWrap" for="cardNumberInput">
-              <span>Card Number</span>
-              <input id="cardNumberInput" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" />
-            </label>
-            <label class="payment-option hidden" id="netBankWrap" for="netBankSelect">
-              <span>Select Bank</span>
-              <select id="netBankSelect" aria-label="Choose bank for net banking">
-                <option value="">Choose your bank</option>
-                <option value="Airtel Payments Bank">Airtel Payments Bank</option>
-                <option value="Axis Bank">Axis Bank</option>
-                <option value="HDFC Bank">HDFC Bank</option>
-                <option value="ICICI Bank">ICICI Bank</option>
-                <option value="Kotak Bank">Kotak Bank</option>
-                <option value="State Bank of India">State Bank of India</option>
-                <option value="Allahabad Bank">Allahabad Bank</option>
-                <option value="Andhra Bank">Andhra Bank</option>
-                <option value="Bank of India">Bank of India</option>
-                <option value="Bank of Maharashtra">Bank of Maharashtra</option>
-                <option value="Canara Bank">Canara Bank</option>
-                <option value="Catholic Syrian Bank">Catholic Syrian Bank</option>
-                <option value="Central Bank of India">Central Bank of India</option>
-              </select>
-            </label>
-            <div class="payment-option hidden" id="scanPayWrap">
-              <span>Scan & Pay Reference</span>
-              <input id="scanRefInput" type="text" placeholder="Enter transaction reference" />
-              <div class="scan-pay-camera-controls">
-                <button id="scanCameraBtn" type="button" class="btn secondary"><i class="fa-solid fa-camera"></i> Open Camera</button>
-                <button id="scanCameraStopBtn" type="button" class="btn secondary hidden"><i class="fa-solid fa-stop"></i> Stop Camera</button>
-              </div>
-              <video id="scanVideo" class="scan-video hidden" muted></video>
-              <small id="scanCameraStatus" class="scan-status">Use camera to scan UPI QR and auto-fill reference.</small>
-            </div>
-          </div>
-        </div>
-        <div class="cart-footer">
-          <strong>Total: ₹<span id="cartTotal">0</span></strong>
-          <button id="placeOrderBtn" class="btn"><i class="fa-solid fa-box-open"></i> Place Order</button>
-        </div>
-      </section>
-
-      <section class="container animate-reveal">
-        <h3>My Orders</h3>
-        <div id="ordersBox" class="orders-box orders-dark"></div>
-      </section>
     </section>
 
-    <section class="container contact-manager animate-reveal">
+    <section id="contactSection" class="container contact-manager animate-reveal">
       <div class="card">
         <h3><i class="fa-solid fa-headset"></i> Contact Jewellery Manager</h3>
         <p>Need help with product details, custom orders, or payment support? Contact the manager directly.</p>
         <div class="contact-actions">
-          <a class="btn contact-icon-btn" href="tel:+919876543210" aria-label="Call jewellery manager" title="Call"><i class="fa-solid fa-phone-volume"></i></a>
-          <a class="btn secondary contact-icon-btn" href="mailto:manager@southindianjewelry.com" aria-label="Email jewellery manager" title="Email"><i class="fa-solid fa-envelope-open-text"></i></a>
+          <a class="btn secondary contact-icon-btn" href="tel:+919876543210" aria-label="Call jewellery manager" data-label="Call" title="Call"><i class="fa-solid fa-phone-volume"></i></a>
+          <a class="btn secondary contact-icon-btn" href="mailto:manager@southindianjewelry.com" aria-label="Email jewellery manager" data-label="Email" title="Email"><i class="fa-solid fa-envelope-open-text"></i></a>
+          <a class="btn secondary contact-icon-btn" href="sms:+919876543210" aria-label="Message jewellery manager" data-label="Message" title="Message"><i class="fa-regular fa-message"></i></a>
+          <a class="btn secondary contact-icon-btn" href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp jewellery manager" data-label="WhatsApp" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
       </div>
     </section>
